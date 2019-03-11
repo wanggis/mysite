@@ -1,0 +1,127 @@
+
+{#使用模板嵌套进行重新编写,要注意模板的相对路径#}
+
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block title %}
+    王晟的个人网站|首页
+{% endblock %}
+
+{% block header_content %}
+         <link rel = "stylesheet" type = "text/css" href="{% static 'style/home.css' %}"/>
+         <script type="text/javascript" src="{% static 'script/echarts.js' %}" charset="utf-8"></script>
+{% endblock%}
+
+{% block nav_home_active %}active{%endblock%}
+
+{% block content %}
+    <h1 class = "home-content">欢迎来到你好，GIS网站</h1>
+     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="container" style="width: 600px;height:400px;"></div>
+    <div class="hot-data">
+        <!-- 今天24小时内的热门博客-->
+        <h3>
+            今日热门点击
+        </h3>
+        <ul>
+            {% for hot_data in today_hot_data %}
+               <li>
+                    <a href="{% url 'myblog:blog_detail' hot_data.id %}">
+                    {{ hot_data.title }}
+                    </a>
+                    ({{ hot_data.read_num_sum }})
+                </li>
+            {% empty %}
+                <li>
+                    扎心了，没人看，无热门。。。
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="hot-data">
+        <!-- 昨天24小时内的热门博客-->
+        <h3>
+            昨日热门点击
+        </h3>
+        <ul>
+            {% for hot_data in yesterday_hot_data %}
+                <li>
+                    <a href="{% url 'myblog:blog_detail' hot_data.id %}">
+                    {{ hot_data.title }}
+                    </a>
+                    ({{ hot_data.read_num_sum }})
+                </li>
+            {% empty %}
+                <li>
+                    扎心了，没人看，无热门。。。
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="hot-data">
+        <h3>
+        一周热门点击
+        </h3>
+        <ul>
+            {% for hot_data in weekly_hot_data %}
+                <li>
+                    <a href="{% url 'myblog:blog_detail' hot_data.id %}">
+                    {{ hot_data.title }}
+                    </a>
+                    ({{ hot_data.read_num_sum }})
+                </li>
+            {% empty %}
+                <li>
+                    扎心了，没人看，无热门。。。
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('container'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: null
+            },
+            tooltip: {},
+            legend: {
+                data:['七天阅读量']
+            },
+
+            xAxis: {
+                axisTick:{
+                  alignWithLabel: true,
+                },
+                data: {{ dates|safe }},
+
+            },
+            yAxis: {
+                show:false,
+            },
+            series: [{
+                name: '七天阅读量',
+                type: 'line',
+                label:{
+                    show:true
+                },
+                markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+                },
+
+                data: {{ read_nums }},
+
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+{% endblock %}
+

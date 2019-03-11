@@ -1,0 +1,67 @@
+
+{#使用模板嵌套进行重新编写,要注意模板的相对路径#}
+
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block title %}
+    王晟的个人网站|登录
+{% endblock %}
+
+{% block header_content %}
+         <link rel = "stylesheet" type = "text/css" href="{% static 'style/home.css' %}"/>
+         <script type="text/javascript" src="{% static 'script/echarts.js' %}" charset="utf-8"></script>
+{% endblock%}
+
+{% block nav_home_active %}active{%endblock%}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                {% if not user.is_autjemticated%}
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">登录</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="" method="POST">  {# "#"表示提交数据到本页面 #}
+                            {% csrf_token %}
+
+                            {% for field in login_form %}   {#这一句会自动生成html代码：用户和密码#}
+                                <label for="{{field.id_for_label}}}">{{field.label}}</label>
+                                {{ field }}
+                                <p class="text-danger">
+                                    {{field.errors.as_text}}
+                                </p>
+                            {% endfor %}
+                            <span class = "pull-left text-danger">
+                                {%for error in login_form.non_field_errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </span>
+                            <div class="clearfix">
+                                <a href = "{% url 'forgot_password' %}" class="pull-left">
+                                    忘记密码？
+                                </a>
+                            </div>
+                            <input type="reset"   class="btn btn-primary pull-right" value="重置"/>
+                            <input type="submit"  class="btn btn-primary pull-right" value = "登录">
+
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                    <span>已登录，跳转到首页。。。</span>
+                    <script type="text/javascript">
+                        window.location.href='/';
+                    </script>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

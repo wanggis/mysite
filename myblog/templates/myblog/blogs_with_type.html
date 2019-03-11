@@ -1,0 +1,15 @@
+{#使用模板嵌套进行重新编写#}
+{% extends 'myblog/blog_list.html' %}
+{% block title %}
+    {#页面标题，填充题目#}
+    {{blog_type.type_name}}
+{% endblock %}
+
+{% block base_list_title %}
+    <span>分类：{{blog_type.type_name}}</span>
+    <span class="pull-right">
+        <a href="{% url 'myblog:blog_list' %}">查看全部博客</a>
+    </span>
+
+{% endblock %}
+

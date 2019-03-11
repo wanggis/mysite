@@ -1,0 +1,58 @@
+
+{#使用模板嵌套进行重新编写,要注意模板的相对路径#}
+
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block title %}
+    王晟的个人网站|个人信息
+{% endblock %}
+
+{% block header_content %}
+         <link rel = "stylesheet" type = "text/css" href="{% static 'style/home.css' %}"/>
+         <script type="text/javascript" src="{% static 'script/echarts.js' %}" charset="utf-8"></script>
+{% endblock%}
+
+{% block nav_home_active %}active{%endblock%}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class = "col-xs-10,col-xs-offset-1">
+                {% if user.is_authenticated %}
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                                <h2>{{ user.username }}</h2>
+                        </div>
+                        <div class="panel-body">
+                            <ul style="list-style-type: none;">
+                                <li >
+                                    <span>昵称：{{ user.profile.nick_name }}</span>
+                                    <span><a href="{% url 'change_nickname' %}?from={{ request.get_full_path }} ">修改昵称</a></span></li>
+                                <li>邮箱：
+                                    {% if user.email %}
+                                        {{ user.email }}
+                                    {% else %}
+                                    <span>未绑定</span>
+                                    <span>
+                                        <a href="{% url 'bind_email' %}?from={{ request.get_full_path }}">绑定邮箱</a>
+                                    </span>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    上一次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}
+                                </li>
+                                <li><a href="{% url 'change_password' %}">修改密码</a></li>
+                            </ul>
+                         </div>
+                    </div>
+                {% else %}
+                    <span>未登录，跳转到首页。。。</span>
+                    <script type="text/javascript">
+                        window.location.href='/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

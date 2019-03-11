@@ -1,0 +1,306 @@
+常用的模板标签：
+循环：for
+条件：if（可以逻辑判断）、ifequal、ifnotequal
+链接：url
+模板嵌套：block、extends、include
+注释:{##}
+
+模板文件夹设置：
+app 模板文件-- app
+project 模板文件-- project
+
+常用的过滤器：
+
+日期：date
+字数截取：truncatechars,truncatechars_html,truncatewords,truncatewords_html
+是否信任html:safe
+长度：Length
+
+
+页面设计：
+
+导航栏 ：LOGO网站名称+导航   xxxx的网站    首页  博客
+主题内容
+尾注(关于我|邮箱地址)
+
+
+
+css框架：Bootstrap
+易用性
+兼容性
+大小
+效果
+功能
+
+
+分页功能：
+1.新增或编辑博客内容
+2.博客文章数较多-->全部加载过慢-->分页加载
+
+分页器：
+在shell命令行环境下进行分页
+    1.引进分页器：from django.core.paginator import Paginator
+    2.实例化：具体如何分页：paginator =Paginator(object_list,each_page_count)
+    3.具体页面：page1=paginator.page(1)
+前端：发送请求，请求代开具体的分页内容
+后端：处理请求返回具体分页相应的内容请求
+
+优化分页展示：
+    1.当前页高亮显示
+    2.不要过多页码的选择
+
+shell命令行模式添加博客：
+1.python manage.py shell
+2.for循环执行新增博客代码  类的实例化
+example:
+    from blog.models import Blog
+    blog = Blog()
+    blog.title = "xxx"
+    ...
+    blog.save()
+
+
+settings自定义设置：
+    公用全局设置可以放在settings中，进行统一的管理
+    from django.conf import settings
+    settings.xxx
+
+
+filter筛选条件：
+    条件中的双下划线：
+        字段查询类型
+        外键拓展（以博客分类为例子）
+             blog_type= get_object_or_404(BlogType,pk=blog_type_pk)  #主键等于参数传进来的值
+             blogs_type_list =Blog.objects.filter(blog_type__id=blog_type__pk)  #进行筛选
+        日期拓展（以月份分类为例子）
+             Blog.objects.filter(created_time__year =2019)
+        支持链式查询：可以一直链接下去
+    等于：直接筛选
+    大于：__gt
+    大于等于：__gte
+    小于：__lt
+    小于等于：__lte
+    包含:__contains(加i忽略大小写)   eg:  Blog.objects.filter(title__icontains="For")   Blog.objects.filter(title__contains="For")
+    开头是：__startswith
+    结尾是：__endswith
+    其中之一：__in    eg:    Blog.objects.filter(id__in=range(1,5))
+    范围：__range
+排除条件：
+    exclude，用法和filter条件一样
+
+
+annotate注释：
+    使用annotate注释拓展查询字段
+
+富文本编辑：
+使用html丰富页面：
+简单文本编辑：直接贴入html代码
+富文本编辑：-->最终解析成html：1.富文本编辑器，2.markdown编辑器
+
+
+使用django-ckeditor进行富文本编辑:
+    选择标准：
+        具有基本的富文本编辑功能
+        可以上传图片
+        可以查看源码
+        有持续更新（维护）
+    过程：
+        1.pip安装导入
+        2.注册应用：settings.py --Installed-app--’ckeditor'
+        3.配置model，把字段改成RichTextfield
+        4.进行数据库迁移处理：python manage.py makemigrations,pthon manage.py migrate
+
+添加上传图片的功能：
+    1.安装 pip install pillow
+    2.注册应用
+    ‘ckeditor_uploader'
+    3.配置settings
+    4.配置url
+    5.配置model
+    把字段改成RichTextUploadingField
+
+
+博客阅读简单计数处理：
+    1.Blog模型添加数字字段记录
+    2.规定，怎么才算阅读一次（计数规则）
+    3.用cookie维持用户信息和阅读次数
+    4.将计数功能独立出来
+    5.计数：关联哪个模型以及对应的主键值------->ContentType!!!!非常重要
+    6.统计某一天的具体阅读数量
+
+利用阅读量数据排行：
+    1.24小时内  --今天的数据统计
+    2.昨日  ------昨天的数据统计
+    3.一周  from django.contrib.contenttypes.fields import GenericRelation  --反向关联，annotate增加注释字段
+    4.30天
+
+
+缓存数据，不用每次都进行计算，减少计算耗时和性能：
+    内存缓存：
+    数据库缓存：
+        django.core.cache.backends.db.DatabaseCache
+        from django.core.cache import cache
+        cache.get,set
+    文件缓存：
+
+评论功能的设计：
+    1.评论功能的方式：
+        1.第三方社会化评论插件：如网易云跟帖，友言，多说。。。
+        2.django评论库：django-comment,回复功能需要修改自己写
+        3.自己写代码实现：
+            创建评论模型：
+                1.评论对象
+                2.评论内容
+                3.评论时间
+                4.评论者
+
+    2.评论需要登录用户：
+        1.确保较低程度减少垃圾评论
+        2.提高了评论的门槛（第三方登录解决）
+        3.还可以通知用户
+        4.设置陌生人登录----自己拓展
+
+    3.提交form表单
+        1.html表单
+        2.django 表单 ：
+            使用form类描述表单
+            1.接受和处理用户提交的数据
+                可检查提交的数据
+                可将数据转换成python的数据类型
+            2.可以自动生成html代码
+            3.Form的使用：
+                创建forms.py文件
+                字段 ---> htmlinput标签
+                每一个字段类型都有一个适当的默认Widget类
+                from django import forms
+                class NameForm(forms.Form):
+                    ....
+
+
+富文本编辑和ajax提交评论
+    1.django-ckeditor富文本表单
+        每一个字段类型都有一个适当的Widgetl类
+        django-ckeditor 提供Widget
+        from ckeditor.widgetd import CKEditorWidget.
+    2.ajax提交
+        正常提交会刷新页面，可以ajax提交数据
+        ajax提交是一种不刷新页面的异步提交方式
+
+
+恢复功能设计和树结构
+评论可以被回复
+回复可以被回复
+
+
+获取评论数和相关评论细节处理
+    1.获取评论数：
+    方法：filter筛选再用count方法计数
+    问题：页面和代码更加复杂
+
+    2.自定义模板标签
+    降低耦合，代码更加独立和使用更加简单
+    ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！非常重要
+    在app内创建templatetags包
+    创建py文件，
+    load标签加载该文件
+    3.细节处理：
+        1.ajax返回的日期
+        2.css样式调整
+        3.级联删除
+        4.django-ckeditor
+
+
+点赞功能设计：
+    1.博客和评论、回复可以点赞；
+    2.可以取消点赞
+    3.可以看到点赞总数
+
+前后端开发建议：
+    功能需求分析->模型设计->前端初步开发->后端实现->完善前端代码
+
+
+完善点赞功能：
+    1.新增评论和回复无法点赞
+        新增评论和服务没有onclick事件
+        *字符串的拼接问题
+
+    2.未登录情况下点赞
+
+
+导航栏添加用户操作
+    1.方便登录登出
+        导航栏右侧添加"登录/注册"或用户信息
+
+
+自定义用户模型
+    1.拓展方法：
+        1.继承django的用户模型
+            方法：
+                1）.自定义模型继承abstractUser
+                2）.配置settings 的AUTH_USER_MODEL
+
+            使用：
+                外键关联settings.AUTH.USER_MODEL
+                用get_user_model的方法获取USER模型
+
+            优点：
+                1.自定义强
+                2.没有不必要的字段（需要继承abstractBASEuser)
+            缺点：
+                需要删库重来或者要项目一开始就使用
+                配置admin麻烦
+        2.新的模型拓展关联user   -->profile!!!!!!!!!!!!!!!!!!!
+            方法：
+            1.创建自定义模型
+            2.外键关联User
+
+            使用：
+                1.直接使用即可
+
+            有点：
+                使用方便
+                不用删库重来影响整体架构
+
+            缺点：
+                存在不必要的字段
+                对比继承的方法，查询字段稍稍慢一点
+
+
+
+修改用户信息
+    昵称，邮箱，密码
+
+
+
+邮箱发挥作用：
+    减少垃圾用户
+    保证账户安全
+    推送消息（通知）
+
+
+引导用户填写邮箱：
+    可从注册的时候要求填写邮箱：
+        发送腰间，填写验证码
+        发送验证邮箱链接
+        直接使用邮箱注册
+
+
+修改登录方式：
+    用户名和邮箱都可以登录
+
+修改密码：
+    1.登录的情况下，修改密码
+    2.未登录的情况下，忘记密码，发送验证码到邮箱
+    3.修复BUG （session没有清楚）
+
+
+评论发送邮件通知
+    一旦品论被回复，会通过邮件通知用户
+
+
+部署准备一：
+    Git:开源的分布式版本控制系统
+
+
+
+
