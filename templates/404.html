@@ -1,0 +1,20 @@
+
+{#使用模板嵌套进行重新编写,要注意模板的相对路径#}
+
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block title %}
+    你好giS网站|发生错误
+{% endblock %}
+
+{% block header_content %}
+         <link rel = "stylesheet" type = "text/css" href="{% static 'style/home.css' %}"/>
+         <script type="text/javascript" src="{% static 'script/echarts.js' %}" charset="utf-8"></script>
+{% endblock%}
+
+{% block nav_home_active %}active{%endblock%}
+
+{% block content %}
+   500，发生错误惹，我会发送邮件批评管理员哒！
+{% endblock %}
+

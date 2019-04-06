@@ -1,0 +1,20 @@
+
+{#使用模板嵌套进行重新编写,要注意模板的相对路径#}
+
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block title %}
+    王晟的个人网站|错误
+{% endblock %}
+
+{% block header_content %}
+         <link rel = "stylesheet" type = "text/css" href="{% static 'style/home.css' %}"/>
+         <script type="text/javascript" src="{% static 'script/echarts.js' %}" charset="utf-8"></script>
+{% endblock%}
+
+{% block nav_home_active %}active{%endblock%}
+
+{% block content %}
+   {{ message }}，<a href="{{redirect_to}}">返回之前博客</a>
+{% endblock %}
+
