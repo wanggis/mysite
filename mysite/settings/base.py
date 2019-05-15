@@ -124,10 +124,10 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static_collected')
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR
-                 , 'static'),
-]
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR
+#                  , 'static'),
+# ]
 
 #MEDIA
 MEDIA_URL ='/media/'
@@ -138,26 +138,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 CKEDITOR_UPLOAD_PATH='UPLOAD/'
 CKEDITOR_CONFIGS={
     'default':{
-        'language':'zh-cn',
-                # 编辑器的宽高请根据你的页面自行设置
-                'width':'730px',
-                'height':'150px',
-                'image_previewText':' ',
-                'tabSpaces': 4,
-                'toolbar': 'Custom',
-                # 添加按钮在这里
-                'toolbar_Custom': [
-                    ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-                    ["TextColor", "BGColor", "RemoveFormat"],
-                    ["NumberedList", "BulletecList"],
-                    ["Link", "Unlink"],
-                    ["Smiley", "SpecialChar", "Blockquote", 'CodeSnippet'],
-                ],
-                # 插件
-                'extraPlugins': ','.join(['codesnippet','uploadimage','prism','widget','lineutils',]),
+            'skin': 'moono-lisa',
+            'toolbar_Basic': [
+                ['Source', '-', 'Bold', 'Italic']
+            ],
+            'toolbar_Full': [
+                ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+                ['Link', 'Unlink', 'Anchor'],
+                ['Image', 'Flash', 'Table', 'HorizontalRule'],
+                ['TextColor', 'BGColor'],
+                ['Smiley', 'SpecialChar'],
+                # 在工具栏中添加该功能的按钮
+                ['CodeSnippet'], ['Source'],
 
-
-    },
+            ],
+            'toolbar': 'Full',
+            'height': 291,
+            'width': 835,
+            'filebrowserWindowWidth': 940,
+            'filebrowserWindowHeight': 725,
+            # 添加的插件
+            'extraPlugins': 'codesnippet',
+          },
     'comment_ckeditor':{
         'toolbar':'custom',  #定义工具栏名称
         'toolbar_custom':[
