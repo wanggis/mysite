@@ -1,0 +1,50 @@
+
+<!-- 参考了 鹦鹉 的代码，在此致谢 -->
+<!-- https://ezbox.idv.tw/131/back-to-top-button-without-images -->
+
+<!-- 参考了杜赛的知乎文章，在此致谢：https://zhuanlan.zhihu.com/p/62136369 -->
+
+<button type="button" id="BackTop" class="toTop-arrow" style="z-index:100;">
+    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+</button>
+
+<script type="text/javascript">
+    //向上滚动的函数,涉及到了Jquery语法，监听两个事件：
+    //用户点击浮动按钮，将页面上滚至顶部
+    //当页面滚动时，根据页面距离顶部的距离，决定按钮显示或隐藏
+    $(function () {
+        $('#BackTop').click(function () {
+            $('html,body').animate({scrollTop:0},500);
+        });
+        $(window).scroll(function () {
+            if($(this).scrollTop()>100){
+                $('#BackTop').fadeIn(100);
+            } else {
+                $('#BackTop').stop().fadeout(100);
+            }
+        }).scroll();
+    });
+</script>
+
+
+<style type="text/css">
+    /* 按钮边框的大小、位置、样式 */
+    .toTop-arrow {
+        width: 3.5rem;
+        height: 3.5rem;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 33%;
+        opacity: 0.7;
+        background: black;
+        cursor: pointer;
+        position: fixed;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        display: none;
+    }
+
+    /* 绘制按钮中的向上箭头 */
+
+</style>

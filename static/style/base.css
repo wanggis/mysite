@@ -5,5 +5,27 @@
 
 body{
     margin-top:70px!important;
+    min-height:100%;margin:0;padding:0;position:relative;
 }
+
+div.footer {
+    margin-top: 5em;
+    background-color:#91e8e1;
+    color:#555;
+}
+.website-info {
+    text-align: center;
+}
+
+div.website-info{
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 1em;
+}
+
+div.website-info p  {
+    margin-bottom: 0;
+
+}
+
 
