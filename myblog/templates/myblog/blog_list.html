@@ -26,7 +26,18 @@
                      <div class="panel-body">
                          {% for blog in page_of_blogs.object_list %}  <!--标签-->
                             <div class="blog">
-                                <h3>
+                                <!-- 标题图 -->
+
+                                    <div class="col-1" >
+                                        <br>
+                                    {# 获取每一个封面的url链接 #}
+                                        <img src="{{ blog.avator.url }}"
+                                             alt="avator"
+                                             style="max-width:65%; border-radius: 20px;">
+                                    </div>
+                                <!-- 其他相关信息-->
+                                <div class="col-2">
+                                    <h3>
                                     <a href="{% url 'myblog:blog_detail' blog.id %}">
                                         {{ blog.title }}
                                     </a>
@@ -47,7 +58,7 @@
                                     <span>点赞({% get_like_count blog%})</span>
                                 </p>
                                 <p>{{blog.content|striptags| truncatechars:10}}</p> <!-- striptags用于去除html标签， “|”的意思是过滤器 ,truncate:缩短，只显示前几个字符内容,一个汉字两个字符-->
-
+                                </div>
                             </div>
                          {%empty%}
                             <div class="blog">

@@ -8,10 +8,11 @@ div.blog:not(:last-child) { /*最后一列不进行下划线设置*/
     margin-bottom: 0.5em;
     border-bottom: 1px solid #eee;
     padding-bottom: 1em;
+
 }
-/*div.blog p.blog-info{
-    margin-bottom: 0;
-}*/
+div.blog{
+    display: flex;
+}
 
 ul.block-info-description{
     list-style-type: none;
@@ -61,4 +62,16 @@ div.like{
 
 div.like .active{
     color:#f22;
+}
+div.col-1{
+    width:20%;
+    height:100%;
+    flex:none;
+    width: 22%;
+    float: left;
+    text-align: center;
+}
+div.col-2{
+    height:100%;
+    flex:1;
 }

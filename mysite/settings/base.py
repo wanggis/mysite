@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     "read_statistics.apps.ReadStatisticsConfig",
     "comment.apps.CommentConfig",
     "likes.apps.LikesConfig",
-    "user.apps.UserConfig",
+    "user.apps.UserConfig",#图像处理
+    'imagekit' #
 ]
 
 MIDDLEWARE = [

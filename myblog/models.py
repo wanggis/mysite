@@ -7,6 +7,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
 from django.urls import reverse  #反向解析
 from read_statistics.models import ReadNumExpendMethod,ReadDetail
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFit
 # Create your models here.
 
 
@@ -27,7 +29,16 @@ class Blog(models.Model,ReadNumExpendMethod):
     # read_num = models.IntegerField(default=0)  #阅读计数字段
     created_time = models.DateTimeField(auto_now_add = True,)  #auto_now_add 首次创建对象时自动将字段设置为现在
     last_update_time = models.DateTimeField(auto_now=True,) #auto_now  用于创建和修改字段
-
+    #给文章博客添加封面
+    avator =ProcessedImageField(
+        #数据库中保存的实际上是封面的对应地址
+        upload_to='avator/',
+        processors=[ResizeToFit(width=140)],
+        format='JPEG',
+        options={'quality': 100},
+        #设置默认的封面
+        default='/avator/default.jpg',
+    )
     def get_url(self):
         return reverse('myblog:blog_detail',kwargs={'blog_pk':self.pk})
     
